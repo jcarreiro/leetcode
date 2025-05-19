@@ -1,0 +1,9 @@
+# Emacs backup files.
+*~
+
+# Virtualenv files.
+.env
+.env.leave
+
+# Python bytecode cache.
+__pycache__/
