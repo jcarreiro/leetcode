@@ -7,3 +7,6 @@
 
 # Python bytecode cache.
 __pycache__/
+
+# Build directory (used for compiled output).
+build/
