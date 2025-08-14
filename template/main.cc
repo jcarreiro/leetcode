@@ -3,18 +3,23 @@
 
 using namespace std;
 
-int main(int argc, char* argv[]) {
-  Solution s;
-
-  constexpr auto kIterations{10'000};
+void benchmark(const std::function<void()>& fn, const std::string& name,
+               size_t iterationCount = 10'000) {
   const auto& start = chrono::high_resolution_clock::now();
 
-  for (int i = 0; i < kIterations; i++) {
-    // Add code to benchmark here
+  for (int i = 0; i < iterationCount; i++) {
+    fn();
   }
 
   const auto& end = chrono::high_resolution_clock::now();
   chrono::duration<double, micro> duration = end - start;
-  cout << "Solution: " << duration / kIterations << " per iteration." << endl;
+  cout << name << ": " << duration / iterationCount << " per iteration."
+       << endl;
+}
+
+int main(int argc, char* argv[]) {
+  Solution s;
+  benchmark([]() { return; }, "nop");
+  // Add additional benchmark calls here:
   return 0;
 }
