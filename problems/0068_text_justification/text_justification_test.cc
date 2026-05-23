@@ -7,7 +7,7 @@
 
 using namespace std;
 
-TEST(Test, Test01) {
+TEST(TextJustificationTest, Test01) {
   Solution s;
   vector<string> words{"This",          "is", "an", "example", "of", "text",
                        "justification."};
@@ -20,7 +20,7 @@ TEST(Test, Test01) {
   EXPECT_EQ(s.fullJustify(words, 16), lines);
 }
 
-TEST(Test, Test02) {
+TEST(TextJustificationTest, Test02) {
   Solution s;
   vector<string> words{"What", "must", "be", "acknowledgment", "shall", "be"};
   // clang-format off
@@ -32,7 +32,7 @@ TEST(Test, Test02) {
   EXPECT_EQ(s.fullJustify(words, 16), lines);
 }
 
-TEST(Test, Test03) {
+TEST(TextJustificationTest, Test03) {
   Solution s;
   vector<string> words{"Science", "is",        "what", "we",      "understand",
                        "well",    "enough",    "to",   "explain", "to",
@@ -49,4 +49,6 @@ TEST(Test, Test03) {
   // clang-format on
   EXPECT_EQ(s.fullJustify(words, 20), lines);
 }
+
+
 

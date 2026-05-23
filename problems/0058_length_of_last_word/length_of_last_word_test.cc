@@ -7,23 +7,25 @@
 
 using namespace std;
 
-TEST(Test, Test01) {
+TEST(LengthOfLastWordTest, Test01) {
   Solution s;
   EXPECT_EQ(s.lengthOfLastWord("Hello World"), 5);
 }
 
-TEST(Test, Test02) {
+TEST(LengthOfLastWordTest, Test02) {
   Solution s;
   EXPECT_EQ(s.lengthOfLastWord("   fly me   to   the moon  "), 4);
 }
 
-TEST(Test, Test03) {
+TEST(LengthOfLastWordTest, Test03) {
   Solution s;
   EXPECT_EQ(s.lengthOfLastWord("luffy is still joyboy"), 6);
 }
 
-TEST(Test, Test04) {
+TEST(LengthOfLastWordTest, Test04) {
   Solution s;
   EXPECT_EQ(s.lengthOfLastWord("a"), 1);
 }
+
+
 

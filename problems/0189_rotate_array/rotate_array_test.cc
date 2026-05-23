@@ -1,7 +1,7 @@
 #include "rotate_array.h"
 #include <gtest/gtest.h>
 
-TEST(Solution, Basic) {
+TEST(RotateArrayTest, Basic) {
   Solution s;
   auto r = s.mod(-1, 7);
   ASSERT_EQ(r, 6);
@@ -48,4 +48,6 @@ TEST(Solution, Basic) {
   s.rotate(v, 0);
   ASSERT_EQ(v, vector<int>({1}));
 }
+
+
 

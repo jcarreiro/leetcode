@@ -3,8 +3,6 @@
 
 using namespace std;
 
-#define reverseWords reverseWordsFast
-
 /*
  * Given an input string s, reverse the order of the words.
  *
@@ -44,7 +42,7 @@ using namespace std;
  * only enough to beat 28% of submissions; make it faster.
  */
 class Solution {
- public:
+public:
   // In-place version, but requires two passes over the string:
   //
   // - in the first pass, we reverse the whole string
@@ -63,9 +61,11 @@ class Solution {
     i = 0;
     j = 0;
     int k = 0;
-    while (i < s.size() ) {
+    while (i < s.size()) {
       // Advance j until we hit a non-space.
-      while (j < s.size() && s[j] == ' ') { j++; }
+      while (j < s.size() && s[j] == ' ') {
+        j++;
+      }
 
       // If we never found a non-space, then this is all trailing spaces at the
       // end of the buffer, and we're done.
@@ -77,10 +77,14 @@ class Solution {
       k = j - k;
 
       // Advance j until we hit a space.
-      while (j < s.size() && s[j] != ' ') { j++; }
+      while (j < s.size() && s[j] != ' ') {
+        j++;
+      }
 
       // If j ended up pointing to space, back up to the end of the word.
-      if (j >= s.size() || s[j] == ' ') { j--; }
+      if (j >= s.size() || s[j] == ' ') {
+        j--;
+      }
 
       // Update k to point to the first character we need to consider on the
       // next pass.
@@ -99,7 +103,9 @@ class Solution {
 
     // If there were any extra spaces, back up so they're not included in the
     // output.
-    while (i > 0 && s[i] == ' ') { i--; }
+    while (i > 0 && s[i] == ' ') {
+      i--;
+    }
 
     // We pushed all the extra spaces to the end, if there were any, so shrink
     // the string.
@@ -107,41 +113,5 @@ class Solution {
     return s;
   }
 
-  // I tried using a stack -- slower than the above.
-  string reverseWordsStack(string s) {
-    stack<char> k;
-    string t(s.size(), '\0');
-    int i = s.size() - 1;
-    int j = 0;
-    while (i >= 0) {
-      // If we hit a space, and the stack isn't empty, output the next word.
-      if (s[i] == ' ' && !k.empty()) {
-        while (!k.empty()) {
-          const char c = k.top();
-          k.pop();
-          t[j++] = c;
-        }
-        t[j++] = ' ';
-      } else if (s[i] != ' ') {
-        k.push(s[i]);
-      }
-      i--;
-    }
-
-    // Output the last word.
-    while (!k.empty()) {
-      const char c = k.top();
-      k.pop();
-      t[j++] = c;
-    }
-
-    if (t[j - 1] == ' ') { j--; }
-
-    t.resize(j);
-    return t;
-  }
-
-  string reverseWordsFast(string s) {
-    return s;
-  }
+  string reverseWords(string s) { return reverseWordsInPlace(s); }
 };

@@ -5,7 +5,7 @@
 using namespace std;
 using namespace ::testing;
 
-TEST(Test, Test01) {
+TEST(ThreeSumTest, Test01) {
   Solution s;
   vector<int> nums{-1, 0, 1, 2, -1, -4};
   EXPECT_THAT(s.threeSum(nums),
@@ -13,20 +13,20 @@ TEST(Test, Test01) {
                                    UnorderedElementsAre(-1, 0, 1)));
 }
 
-TEST(Test, Test02) {
+TEST(ThreeSumTest, Test02) {
   Solution s;
   vector<int> nums{0, 1, 1};
   EXPECT_EQ(s.threeSum(nums), vector<vector<int>>());
 }
 
-TEST(Test, Test03) {
+TEST(ThreeSumTest, Test03) {
   Solution s;
   vector<int> nums{0, 0, 0};
   EXPECT_THAT(s.threeSum(nums),
               UnorderedElementsAre(UnorderedElementsAre(0, 0, 0)));
 }
 
-TEST(Test, Test04) {
+TEST(ThreeSumTest, Test04) {
   Solution s;
   vector<int> nums{-2, -1, 0, 1, 2};
   EXPECT_THAT(s.threeSum(nums),
@@ -34,7 +34,7 @@ TEST(Test, Test04) {
                                    UnorderedElementsAre(-1, 0, 1)));
 }
 
-TEST(Test, Test05) {
+TEST(ThreeSumTest, Test05) {
   Solution s;
   vector<int> nums{-2, 0, 1, 1, 2};
   EXPECT_THAT(s.threeSum(nums),
@@ -42,7 +42,7 @@ TEST(Test, Test05) {
                                    UnorderedElementsAre(-2, 1, 1)));
 }
 
-TEST(Test, Test06) {
+TEST(ThreeSumTest, Test06) {
   Solution s;
   //  i           j
   // --------------
@@ -54,7 +54,7 @@ TEST(Test, Test06) {
                                    UnorderedElementsAre(2, -1, -1)));
 }
 
-TEST(Test, Test07) {
+TEST(ThreeSumTest, Test07) {
   Solution s;
   //  i           j
   // --------------
@@ -66,7 +66,7 @@ TEST(Test, Test07) {
                                    UnorderedElementsAre(6, -3, -3)));
 }
 
-TEST(Test, Test08) {
+TEST(ThreeSumTest, Test08) {
   Solution s;
   vector<int> nums{2, -3, 0, -2, -5, -5, -4, 1, 2, -2, 2, 0, 2, -4, 5, 5, -10};
   EXPECT_THAT(
@@ -77,7 +77,7 @@ TEST(Test, Test08) {
           UnorderedElementsAre(-3, 1, 2), UnorderedElementsAre(-2, 0, 2)));
 }
 
-TEST(Test, Test09) {
+TEST(ThreeSumTest, Test09) {
   Solution s;
   vector<int> nums{3, 0, 3, 2, -4, 0, -3, 2, 2, 0, -1, -5};
   EXPECT_THAT(s.threeSum(nums),

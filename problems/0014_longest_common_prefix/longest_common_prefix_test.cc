@@ -7,15 +7,17 @@
 
 using namespace std;
 
-TEST(Test, Test01) {
+TEST(LongestCommonPrefixTest, Test01) {
   Solution s;
   vector<string> strs{"flower","flow","flight"};
   EXPECT_EQ(s.longestCommonPrefix(strs), "fl");
 }
 
-TEST(Test, Test02) {
+TEST(LongestCommonPrefixTest, Test02) {
   Solution s;
   vector<string> strs{"dog","racecar","car"};
   EXPECT_EQ(s.longestCommonPrefix(strs), "");
 }
+
+
 

@@ -7,18 +7,20 @@
 
 using namespace std;
 
-TEST(Test, Test01) {
+TEST(IntegerToRomanTest, Test01) {
   Solution s;
   EXPECT_EQ(s.intToRoman(3749), "MMMDCCXLIX");
 }
 
-TEST(Test, Test02) {
+TEST(IntegerToRomanTest, Test02) {
   Solution s;
   EXPECT_EQ(s.intToRoman(58), "LVIII");
 }
 
-TEST(Test, Test03) {
+TEST(IntegerToRomanTest, Test03) {
   Solution s;
   EXPECT_EQ(s.intToRoman(1994), "MCMXCIV");
 }
+
+
 

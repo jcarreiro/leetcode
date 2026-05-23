@@ -7,27 +7,29 @@
 
 using namespace std;
 
-TEST(Test, Test01) {
+TEST(MinimumSizeSubarraySumTest, Test01) {
   Solution s;
   vector<int> nums{2, 3, 1, 2, 4, 3};
   EXPECT_EQ(s.minSubArrayLen(7, nums), 2);
 }
 
-TEST(Test, Test02) {
+TEST(MinimumSizeSubarraySumTest, Test02) {
   Solution s;
   vector<int> nums{1, 4, 4};
   EXPECT_EQ(s.minSubArrayLen(4, nums), 1);
 }
 
-TEST(Test, Test03) {
+TEST(MinimumSizeSubarraySumTest, Test03) {
   Solution s;
   vector<int> nums{1, 1, 1, 1, 1, 1, 1, 1};
   EXPECT_EQ(s.minSubArrayLen(11, nums), 0);
 }
 
-TEST(Test, Test04) {
+TEST(MinimumSizeSubarraySumTest, Test04) {
   Solution s;
   vector<int> nums{10, 2, 3};
   EXPECT_EQ(s.minSubArrayLen(6, nums), 1);
 }
+
+
 

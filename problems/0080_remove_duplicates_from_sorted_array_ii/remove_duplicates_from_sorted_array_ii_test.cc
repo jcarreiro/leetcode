@@ -1,7 +1,7 @@
 #include "remove_duplicates_from_sorted_array_ii.h"
 #include <gtest/gtest.h>
 
-TEST(Test, shortArray) {
+TEST(RemoveDuplicatesFromSortedArrayIiTest, shortArray) {
   Solution s;
   vector<int> v{1};
   auto k = s.removeDuplicates(v);
@@ -10,7 +10,7 @@ TEST(Test, shortArray) {
   ASSERT_EQ(v, vector<int>({1}));
 }
 
-TEST(Test, longArray) {
+TEST(RemoveDuplicatesFromSortedArrayIiTest, longArray) {
   Solution s;
   vector<int> v{1, 1, 1, 2, 2, 3};
   auto k = s.removeDuplicates(v);
@@ -18,4 +18,6 @@ TEST(Test, longArray) {
   v.resize(k);
   ASSERT_EQ(v, vector<int>({1, 1, 2, 2, 3}));
 }
+
+
 
