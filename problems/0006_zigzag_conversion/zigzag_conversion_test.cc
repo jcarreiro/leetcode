@@ -21,3 +21,5 @@ TEST(ZigzagConversionTest, Test03) {
   Solution s;
   EXPECT_EQ(s.convert("A", 1), "A");
 }
+
+
