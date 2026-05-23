@@ -1,13 +1,14 @@
-#include <gtest/gtest.h>
-#include <iostream>
-#include <random>
-#include <stack>
-#include <unordered_set>
+#include "include/test_utils.h"
 #include "solution.h"
+#include <gtest/gtest.h>
 
-using namespace std;
+TEST(TwoSumTest, BasicExample) {
+  Solution s;
 
-TEST(SolutionTest, Test01) {
-  // Add test case(s) here.
-  EXPECT_TRUE(false);
+  vector<int> nums = {2, 7, 11, 15};
+  int target = 9;
+
+  auto result = time_it([&] { return s.twoSum(nums, target); });
+
+  EXPECT_EQ(result, (vector<int>{0, 1}));
 }

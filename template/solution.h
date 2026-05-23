@@ -1,8 +1,10 @@
-#include <gtest/gtest.h>
-#include <iostream>
+// Copyright 2026 Jason M. Carreiro.
+
+#pragma once
 
 using namespace std;
 
 class Solution {
-  // add method here
+public:
+  // Declare methods here
 };

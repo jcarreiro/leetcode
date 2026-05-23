@@ -1,0 +1,29 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "terminal.integrated.fontFamily": "Fira Code",
+    "editor.formatOnSave": true,
+    "files.exclude": {
+      "**/._*": true,
+      "**/.DS_Store": true
+    },
+    "editor.inlineSuggest.enabled": false,
+    "github.copilot.enable": {
+      "*": false
+    },
+    "cmake.ctest.testExplorerIntegrationEnabled": true
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-vscode.cpptools",
+      "ms-vscode.cmake-tools",
+      "ms-python.python",
+      "formulahendry.code-runner"
+    ]
+  }
+}
