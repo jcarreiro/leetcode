@@ -16,7 +16,8 @@
     "github.copilot.enable": {
       "*": false
     },
-    "cmake.ctest.testExplorerIntegrationEnabled": true
+    "cmake.ctest.testExplorerIntegrationEnabled": true,
+    "cmake.ctest.testSuiteDelimiter": "\\."
   },
   "extensions": {
     "recommendations": [

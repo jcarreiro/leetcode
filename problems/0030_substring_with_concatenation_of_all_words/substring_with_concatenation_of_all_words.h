@@ -1,7 +1,13 @@
-#include <gtest/gtest.h>
+#include <algorithm>
+#include <cassert>
+#include <deque>
 #include <iostream>
 #include <list>
+#include <map>
 #include <memory>
+#include <set>
+#include <unordered_map>
+#include <vector>
 
 using namespace std;
 
@@ -56,58 +62,257 @@ using namespace std;
 class Solution {
 public:
   struct TrieNode {
+    set<int> wordsMatched;
     map<char, shared_ptr<TrieNode>> children;
+
+    shared_ptr<TrieNode> addChild(const char c) {
+      auto child = getChild(c);
+      if (!child) {
+        child = make_shared<TrieNode>();
+        children[c] = child;
+      }
+      return child;
+    }
 
     shared_ptr<TrieNode> getChild(const char c) {
       auto it = children.find(c);
       if (it != children.end()) {
         return it->second;
       }
-
-      auto node = make_shared<TrieNode>();
-      children[c] = node;
-      return node;
+      return nullptr;
     }
   };
 
   shared_ptr<TrieNode> buildTrie(const vector<string>& words) {
     auto root = make_shared<TrieNode>();
-
-    for (const auto& word : words) {
+    for (int i = 0; i < words.size(); i++) {
       auto node = root;
+      const auto& word = words[i];
       for (const auto& c : word) {
-        cout << "Got letter: " << c << endl;
-        node = node->getChild(c);
+        node = node->addChild(c);
       }
+      node->wordsMatched.insert(i);
     }
-
     return root;
   }
 
-  vector<int> findSubstring(string s, vector<string>& words) {
-    if (words.empty()) {
+  set<int> matchWord(const std::string& s, int startPos, int wordLength,
+                     const shared_ptr<TrieNode> trieRoot) {
+    int endPos = startPos + wordLength;
+    if (endPos > s.size()) {
+      // Not enough characters left to match a whole word.
       return {};
     }
 
-    auto root = buildTrie(words);
+    auto trieNode = trieRoot;
+    for (; startPos < endPos; startPos++) {
+      trieNode = trieNode->getChild(s[startPos]);
+      if (!trieNode) {
+        // We didn't match any word in the trie.
+        return {};
+      }
+    }
+    // If we get here, then we must have matched a word.
+    assert(!trieNode->wordsMatched.empty());
+    return trieNode->wordsMatched;
+  }
 
-    cout << "Got trie root: " << root << endl;
+  int markWordAsUsed(int startPos, int pos, int wordLength,
+                     const set<int>& wordsMatched, vector<int>& usedWords) {
+    assert(!wordsMatched.empty());
+    int bestWordIndex = -1;
+    int bestWordEndPos = -1;
+    for (const auto widx : wordsMatched) {
+      int endPos = usedWords[widx];
+      if (endPos < startPos) {
+        // This word isn't used yet in this match.
+        bestWordIndex = widx;
+        bestWordEndPos = -1;
+        break;
+      }
 
-    // Loop over the possible starting positions for a match (0..wordLen).
-    const int wordLen = words[0].length();
-    for (int offset = 0; offset < wordLen; offset++) {
-      cout << "offset: " << offset << endl;
-
-      // Scan forward from the offset, matching words from our word list.
-      const auto& node = root;
-      for (auto i = offset; i < s.length(); i++) {
-        cout << "i: " << i << endl;
-
-        // Try to extend our current match.
-
+      if (bestWordEndPos == -1 || endPos < bestWordEndPos) {
+        bestWordIndex = widx;
+        bestWordEndPos = endPos;
       }
     }
 
-    return {};
+    // Update the end position of the used word.
+    usedWords[bestWordIndex] = pos + wordLength;
+
+    // If the word was used, return the adjusted start pos.
+    if (bestWordEndPos != -1) {
+      return bestWordEndPos;
+    }
+    return startPos;
+  }
+
+  vector<int> findSubstringTrie(string s, vector<string>& words) {
+    if (words.empty()) {
+      // There are no words to match.
+      return {};
+    }
+
+    const int wordLength = static_cast<int>(words[0].length());
+    const int substrLength = static_cast<int>(wordLength * words.size());
+    if (s.size() < substrLength) {
+      // The string isn't long enough to have all of the words in it.
+      return {};
+    }
+
+    // Build the trie to use for matching words.
+    auto trieRoot = buildTrie(words);
+
+    // ba, ab, bb
+    //
+    // abbabba
+
+    // The vector of starting positions for all of the concatenated substrings.
+    vector<int> startPositions;
+
+    // Loop over the possible starting positions for a match: [0..wordLen].
+    for (int offset = 0; offset < wordLength; offset++) {
+      // The start of the current substring.
+      int startPos = offset;
+
+      // An array with the end position for any already matched words; ie.,
+      // if the words are ["foo", "bar", ...] and the string is "foobar...",
+      // then the array would have [3, 6, ...] after matching "foo" and "bar".
+      // This is the position we should advance to if we need to "re-use" the
+      // word while matching.
+      vector<int> usedWords(words.size(), -1);
+
+      // Match words, starting at our offset.
+      for (auto pos = offset; pos < s.length(); pos += wordLength) {
+        // Try to match the next word.
+        const auto wordsMatched = matchWord(s, pos, wordLength, trieRoot);
+        if (wordsMatched.empty()) {
+          // We didn't match any word; update our startPos and loop.
+          startPos = pos + wordLength;
+          continue;
+        }
+
+        // We matched one or more words in the word list (the latter is only
+        // possible if there are duplicates). Mark the word as used. If the
+        // word was already used, this function will return a new startPos.
+        startPos =
+            markWordAsUsed(startPos, pos, wordLength, wordsMatched, usedWords);
+
+        // If we've matched all the words in the words array, then the
+        // current match start is a solution, so add it to the output
+        // array and move up the start position for the next loop.
+        int endPos = pos + wordLength;
+        if (endPos - startPos == substrLength) {
+          // Record this start position in our list.
+          startPositions.push_back(startPos);
+
+          // Move the start position up past the first word in the match.
+          startPos += wordLength;
+        }
+      }
+    }
+
+    return startPositions;
+  }
+
+  vector<int> findSubstringHash(string s, vector<string>& words) {
+    if (words.empty()) {
+      // There are no words to match.
+      return {};
+    }
+
+    const auto wordLength = words[0].length();
+    const auto matchLength = wordLength * words.size();
+    if (s.size() < matchLength) {
+      // The string isn't long enough to have all of the words in it.
+      return {};
+    }
+
+    // The vector of starting indices for the matched substrings.
+    vector<int> startPositions;
+
+    // Loop, checking each possible starting offset in the string.
+    for (size_t offset = 0; offset < wordLength; offset++) {
+      // The window start position.
+      auto startPos = offset;
+
+      struct WordData {
+        deque<size_t> q;
+        size_t count;
+      };
+
+      unordered_map<string_view, WordData> wordMap;
+      for (const auto& word : words) {
+        auto& wd = wordMap[word];
+        wd.count++;
+      }
+
+      // Try to match each word in the string, start from our current offset.
+      for (size_t pos = offset; pos < s.length(); pos += wordLength) {
+        auto endPos = pos + wordLength;
+
+        // If there's not at least a word's worth of characters, left, then
+        // we can't match another word.
+        if (endPos > s.length()) {
+          break;
+        }
+
+        // Get the next word. Because all words are the same length, we can
+        // just read the next wordLength characters.
+        string_view word{s.data() + pos, wordLength};
+
+        // Check to see if this word is one of the words in our list. This is
+        // O(1) since we use a hash map.
+        auto it = wordMap.find(word);
+        if (it == wordMap.end()) {
+          // This word isn't our on list -- move the start position up and
+          // keep checking.
+          startPos = endPos;
+          continue;
+        }
+
+        // This word is on our list. Check to see if we've used it already in
+        // the current match.
+        auto& wd = it->second;
+        auto& q = wd.q;
+        if (!q.empty()) {
+          // This word has already been used. Check to see if we've used all of
+          // the copies in our words list.
+          if (q.size() == wd.count) {
+            // We've used all the copies of this word already, so we need to
+            // re-use one. Pop the first end position off the queue, then move
+            // our window start position up past it. This shrinks our window
+            // and removes the first occurrence of the word from the match.
+            const auto wordEndPos = q.front();
+            q.pop_front();
+
+            // If the word end position is before our current window start,
+            // then this word wasn't actually used in this match window, so
+            // we don't need to move up our start position.
+            if (wordEndPos > startPos) {
+              startPos = wordEndPos;
+            }
+          }
+        }
+
+        // Add the word end position to the queue to mark this word as used.
+        q.push_back(endPos);
+
+        // Check to see if we have a full window, and if so, record the match.
+        if (endPos - startPos == matchLength) {
+          // Record this match.
+          startPositions.push_back(static_cast<int>(startPos));
+
+          // Move the window start position up past the first word.
+          startPos += wordLength;
+        }
+      }
+    }
+
+    return startPositions;
+  }
+
+  vector<int> findSubstring(string s, vector<string>& words) {
+    return findSubstringHash(s, words);
   }
 };
