@@ -147,6 +147,7 @@ public:
     return startPos;
   }
 
+  // This solution works, but it's too slow.
   vector<int> findSubstringTrie(string s, vector<string>& words) {
     if (words.empty()) {
       // There are no words to match.
@@ -215,6 +216,8 @@ public:
     return startPositions;
   }
 
+  // This solution has optimal complexity: O(n + m), where n is the length of
+  // the string and m is the number of words in the word list.
   vector<int> findSubstringHash(string s, vector<string>& words) {
     if (words.empty()) {
       // There are no words to match.
