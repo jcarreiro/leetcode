@@ -4,6 +4,9 @@ This repository contains jcarreiro's C++ solutions for LeetCode problems. It
 uses CMake for builds and supports running tests with CTest or the generated
 test targets.
 
+## AI Tool Usage
+No AI tools or coding agents were used to write any of the code in this repository; all solutions were written by hand.
+
 ## Repository Structure
 - **CMakeLists**: [CMakeLists.txt](CMakeLists.txt) — top-level CMake project.
 - **Entry point**: [main.cc](main.cc) — optional runner used by some examples.
