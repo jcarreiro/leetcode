@@ -4,7 +4,8 @@
 #include <iostream>
 
 // High‑precision timing helper for benchmarking inside tests
-template <typename Func> auto time_it(Func&& f) {
+template <typename Func>
+auto time_it(Func&& f) {
   auto start = chrono::high_resolution_clock::now();
   auto result = f();
   auto end = chrono::high_resolution_clock::now();
